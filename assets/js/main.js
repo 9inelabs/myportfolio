@@ -69,7 +69,7 @@
       <div class="topbar__right">${socialLinks()}${themeBtn}</div>
     </header>`;
   const emailBar = () => `<span class="topbar__email">${esc(C.person.email)}</span>
-      <button class="pill" type="button" data-copy="${esc(C.person.email)}">${I.copy}Copy<span class="only-sm">&nbsp;email</span></button>
+      <button class="pill" type="button" data-copy="${esc(C.person.email)}">${I.copy}<span>Copy<span class="only-sm"> email</span></span></button>
       ${C.person.cv ? `<a class="pill" href="${esc(C.person.cv)}" target="_blank" rel="noopener">CV</a>` : ""}`;
   const footer = () => `<footer class="footer">
       <span>© ${new Date().getFullYear()} ${esc(C.person.name)}. Designed and built by me.</span>
@@ -427,16 +427,23 @@
       }
     });
 
-    // back to top: shows once the last section is on screen
+    // back to top: shows from the work section onward (on case studies, once past the hero)
     document.addEventListener("click", (e) => {
       if (!e.target.closest("[data-to-top]")) return;
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     });
     const topBtn = document.querySelector(".to-top");
-    const last = [...document.querySelectorAll("#app > .panel")].pop();
-    if (topBtn && last && "IntersectionObserver" in window) {
-      new IntersectionObserver(([en]) => topBtn.classList.toggle("show", en.isIntersecting), { threshold: 0.15 }).observe(last);
+    const from = document.getElementById("work") || document.querySelector("#app > .panel + *");
+    if (topBtn && from) {
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        topBtn.classList.toggle("show", from.getBoundingClientRect().top < innerHeight * 0.6);
+      };
+      addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      addEventListener("resize", update);
+      update();
     }
 
     // reveal on scroll

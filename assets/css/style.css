@@ -89,6 +89,11 @@ button { font: inherit; color: inherit; }
 :root[data-theme="dark"] [data-p] { --p-bg: var(--pd-bg); --p-ink: var(--pd-ink); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) [data-p] { --p-bg: var(--pd-bg); --p-ink: var(--pd-ink); } }
 
+/* plain-HTML copy for search engines; the script replaces it with the full page */
+.prerender { max-width: 70ch; margin: 0 auto; padding: 32px 8px; display: grid; gap: 12px; }
+.prerender a { text-decoration: underline; }
+.js .prerender { display: none; }
+
 /* ---------- panels ---------- */
 .panel {
   position: relative;

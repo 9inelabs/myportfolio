@@ -19,6 +19,18 @@ All text, links, projects, services, tools and stats live in **`assets/js/conten
 2. Copy one entry in `projects`, change its `slug`, text and `theme` colours, and list the image file names (without `.webp`) under `screens` and `cover`.
 3. Set `device` to `"phone"` for apps, or `"browser"` for websites. For a website, name its mobile screenshots `mobile-*.webp` to show them in phone frames.
 
+## Search engines
+
+After editing `content.js`, run:
+
+```bash
+node scripts/prerender.js
+```
+
+This refreshes three things: the plain-HTML copy of the content in `index.html` (search engines read it even without JavaScript), the structured data that tells Google who Franklyn Raymond is, and `sitemap.xml`.
+
+The `*.txt` file at the root holding a long hex string is the IndexNow key. It lets the site notify Bing, Yandex and the other IndexNow search engines of updates, so keep it.
+
 ## Pages
 
 | File | What it is |

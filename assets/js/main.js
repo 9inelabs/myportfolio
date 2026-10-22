@@ -299,6 +299,9 @@
     document.title = `${p.title} · ${C.person.name}`;
     const md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute("content", p.summary);
+    const canon = document.createElement("link");
+    canon.rel = "canonical"; canon.href = `${C.site.url}/project.html?p=${encodeURIComponent(p.slug)}`;
+    document.head.appendChild(canon);
     document.body.setAttribute("data-p", "");
     document.body.setAttribute("style", pVars(p.theme));
 

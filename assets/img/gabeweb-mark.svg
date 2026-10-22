@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg"><symbol id="g-mark" viewBox="-20 -20 1640 1640">
+      <g fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="9"><path d="M678 749.5 L8 471.9"/><path d="M749.5 678 L471.9 8"/><path d="M850.5 678 L1128.1 8"/><path d="M922 749.5 L1592 471.9"/><path d="M922 850.5 L1592 1128.1"/><path d="M850.5 922 L1128.1 1592"/><path d="M749.5 922 L471.9 1592"/><path d="M678 850.5 L8 1128.1"/></g>
+      <path fill="none" stroke="currentColor" stroke-width="30" d="M1592 471.9 L1128.1 8 L471.9 8 L8 471.9 L8 1128.1 L471.9 1592 L1128.1 1592 L1592 1128.1"/>
+      <path fill="none" stroke="currentColor" stroke-width="30" d="M1460 526.6 L1073.4 140 L526.6 140 L140 526.6 L140 1073.4 L526.6 1460 L1073.4 1460 L1460 1073.4"/>
+      <path fill="none" stroke="currentColor" stroke-width="34" d="M1160 650.9 L949.1 440 L650.9 440 L440 650.9 L440 949.1 L650.9 1160 L949.1 1160 L1160 949.1"/>
+      <path fill="none" stroke="currentColor" stroke-width="34" d="M1070 688.2 L911.8 530 L688.2 530 L530 688.2 L530 911.8 L688.2 1070 L911.8 1070 L1070 911.8"/>
+      <path fill="none" stroke="currentColor" stroke-width="34" d="M990 721.3 L878.7 610 L721.3 610 L610 721.3 L610 878.7 L721.3 990 L878.7 990 L990 878.7"/>
+      <path fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="104" d="M1305 590.8 L1009.2 295 L590.8 295 L295 590.8 L295 1009.2 L590.8 1305 L1009.2 1305 L1305 1009.2 L1305 848"/>
+      <path fill="currentColor" d="M812 796 L1594 796 L1594 1128.9 L918 848.9 L812 848 Z"/>
+      <path fill="currentColor" d="M918 751.1 L848.9 682 L751.1 682 L682 751.1 L682 848.9 L751.1 918 L848.9 918 L918 848.9 L812 796 Z"/>
+    </symbol></svg>

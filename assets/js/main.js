@@ -30,6 +30,7 @@
     whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.48-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.27.49 1.7.63.72.23 1.37.2 1.88.12.58-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.83 9.83 0 0 1 7 2.9 9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.9 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.4"/></svg>',
     sun: '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
     moon: '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>',
+    up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12.5 2.5 2.5L16 9.5"/></svg>',
     handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>',
   };
@@ -50,12 +51,15 @@
     return `<i class="tool__mark" style="--m:url('../icons/${t.icon}.svg')${t.color ? `;--c:${t.color}` : ""}" aria-hidden="true"></i>`;
   };
 
+  const gmark = (cls = "gmark") => (C.person.companyMark ? `<svg class="${cls}" viewBox="-20 -20 1640 1640" aria-hidden="true"><use href="${esc(C.person.companyMark)}"/></svg>` : "");
+  const companyLink = (inner = esc(C.person.company)) => `<a class="co-link" href="${esc(C.person.companyUrl)}" target="_blank" rel="noopener">${gmark()}${inner}</a>`;
+
   // ---------- shared chrome ----------
   const socialLinks = () => {
     const items = [
       ...C.socials.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`),
       `<a href="${waLink()}" target="_blank" rel="noopener">WhatsApp</a>`,
-      `<a href="${esc(C.person.companyUrl)}" target="_blank" rel="noopener">${esc(C.person.company)}</a>`,
+      companyLink(),
     ];
     return `<nav class="links" aria-label="Elsewhere">${items.join('<span class="sep" aria-hidden="true">/</span>')}</nav>`;
   };
@@ -69,26 +73,38 @@
       ${C.person.cv ? `<a class="pill" href="${esc(C.person.cv)}" target="_blank" rel="noopener">CV</a>` : ""}`;
   const footer = () => `<footer class="footer">
       <span>© ${new Date().getFullYear()} ${esc(C.person.name)}. Designed and built by me.</span>
-      ${socialLinks()}
-    </footer>`;
+      <div class="footer__right">${socialLinks()}<a class="to-top-link" href="#top" data-to-top>${I.up}Back to top</a></div>
+    </footer>
+    <button class="to-top" type="button" data-to-top aria-label="Back to top">${I.up}</button>`;
 
   // device mockups
   const phone = (src, alt = "", lazy = true) =>
     `<div class="phone"><img src="${src}" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ""} decoding="async"></div>`;
   const browser = (src, alt = "", host = "", lazy = true) =>
     `<div class="browser"><div class="browser__bar"><i></i><i></i><i></i><b>${esc(host)}</b></div><img src="${src}" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ""} decoding="async"></div>`;
-  const hostOf = (p) => { try { return new URL(p.links[0].url).host.replace(/^www\./, ""); } catch { return ""; } };
+  const hostOf = (p) => { if (p.site) return p.site; try { return new URL(p.links[0].url).host.replace(/^www\./, ""); } catch { return ""; } };
   const coverStack = (p, lazy = true) => {
     const names = p.cover;
+    if (p.device === "logo") {
+      return `<div class="logo-stage"><span class="logo-stage__tile"><img src="${esc(p.logo)}" alt="${esc(p.client || p.title)} logo"${lazy ? ' loading="lazy"' : ""}></span></div>`;
+    }
     if (p.device === "browser") {
-      return `<div class="web-stack stack">${browser(shotSrc(p, names[0]), `${p.title} home page`, hostOf(p), lazy)}${phone(shotSrc(p, names[1]), `${p.title} on mobile`, lazy)}</div>`;
+      return `<div class="web-stack stack${names[1] ? "" : " web-stack--solo"}">${browser(shotSrc(p, names[0]), `${p.title} home page`, hostOf(p), lazy)}${names[1] ? phone(shotSrc(p, names[1]), `${p.title} on mobile`, lazy) : ""}</div>`;
     }
     return `<div class="stack">${names.map((n) => phone(shotSrc(p, n), `${p.title} screen`, lazy)).join("")}</div>`;
+  };
+
+  // compact card visual: a browser preview that scrolls through the full page on hover
+  const miniVisual = (p) => {
+    if (p.device === "logo") return coverStack(p);
+    return `<div class="browser browser--scroll"><div class="browser__bar"><i></i><i></i><i></i><b>${esc(hostOf(p) || p.title)}</b></div><div class="browser__view"><img src="${shotSrc(p, p.cover[0])}" alt="${esc(p.title)} preview" loading="lazy" decoding="async"></div></div>`;
   };
 
   // ---------- home ----------
   function renderHome() {
     const P = C.person;
+    const featured = C.projects.filter((p) => !p.group);
+    const more = C.projects.filter((p) => p.group === "gabeweb");
     const counts = {
       all: C.projects.length,
       design: C.projects.filter((p) => /design/i.test(p.category)).length,
@@ -102,11 +118,11 @@
       .join("");
 
     app.innerHTML = `
-      <section class="panel" aria-label="Introduction">
+      <section class="panel" id="top" aria-label="Introduction">
         ${topbar(emailBar())}
         <div class="hero">
           <div class="avatar"><img src="${esc(P.avatar)}" alt="Portrait of ${esc(P.name)}" width="108" height="108"><span class="avatar__tag">${esc(P.name)} 👋</span></div>
-          <p class="role">${esc(P.title)} at <a href="${esc(P.companyUrl)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${esc(P.company)}</a></p>
+          <p class="role">${esc(P.title)} at ${companyLink()}</p>
           <h1 class="display h1">${twoTone(C.hero.headline, true)}</h1>
           <div class="hero__ctas">
             <a class="btn" href="${esc(C.hero.primaryCta.href)}">${esc(C.hero.primaryCta.label)} ${I.arrow}</a>
@@ -136,7 +152,7 @@
             </div>
           </div>
           <div class="work-grid">
-            ${C.projects
+            ${featured
               .map(
                 (p, i) => `<a class="work-card" href="${projectUrl(p)}" data-p style="${pVars(p.theme)};--d:${i % 2}" data-cat="${esc(p.category)}" data-reveal>
                   <div class="work-card__visual"><div class="work-card__glow"></div>${coverStack(p)}<span class="work-card__cta" aria-hidden="true">${I.arrow}</span></div>
@@ -151,6 +167,29 @@
           </div>
         </div>
       </section>
+
+      ${more.length ? `<section class="panel panel--light" id="gabeweb" aria-labelledby="gabeweb-title">
+        <div class="inner">
+          <div class="head head--row">
+            <div class="head" data-reveal>
+              <span class="eyebrow eyebrow--mark">${gmark()}More work at ${esc(P.company)}</span>
+              <h2 class="display h2" id="gabeweb-title">${twoTone("Built with [the Gabeweb team.]")}</h2>
+            </div>
+            <p class="lede" data-reveal style="max-width:42ch">Websites, hotel software and event systems I've worked on at ${companyLink()}, each designed in Figma, approved by the client, then built and launched.</p>
+          </div>
+          <div class="mini-grid">
+            ${more.map((p, i) => `<a class="mini-card" href="${projectUrl(p)}" data-p style="${pVars(p.theme)};--d:${i % 4}" data-cat="${esc(p.category)}" data-reveal>
+              <div class="mini-card__visual">${miniVisual(p)}</div>
+              <div class="mini-card__body">
+                <span class="mini-card__client">${esc(p.client || p.platform[0])}</span>
+                <h3>${esc(p.title)}</h3>
+                <p>${esc(p.summary)}</p>
+                <span class="mini-card__foot"><span class="tag">${esc(p.platform[0])}</span><span class="mini-card__go" aria-hidden="true">${I.arrow}</span></span>
+              </div>
+            </a>`).join("")}
+          </div>
+        </div>
+      </section>` : ""}
 
       <section class="panel panel--light" id="services" aria-labelledby="services-title">
         <div class="inner">
@@ -175,7 +214,7 @@
         <div class="inner about">
           <div class="about__photo" data-reveal>
             <img src="${esc(P.portrait)}" alt="${esc(P.name)}" loading="lazy">
-            <span class="about__badge"><i>FR</i>${esc(P.title.replace(" / ", " & "))}<br>at ${esc(P.company)}</span>
+            <span class="about__badge"><i>${gmark()}</i><span>${esc(P.title.replace(" / ", " & "))}<br>at ${esc(P.company)}</span></span>
           </div>
           <div class="about__text">
             <span class="eyebrow" data-reveal>About</span>
@@ -238,7 +277,7 @@
       </section>`;
 
     // work filters
-    const cards = [...app.querySelectorAll(".work-card")];
+    const cards = [...app.querySelectorAll(".work-card, .mini-card")];
     app.querySelectorAll("[data-filter]").forEach((b) =>
       b.addEventListener("click", () => {
         const f = b.dataset.filter;
@@ -263,28 +302,31 @@
     document.body.setAttribute("data-p", "");
     document.body.setAttribute("style", pVars(p.theme));
 
-    const shots = p.screens.map(([file, cap]) => ({ src: shotSrc(p, file), cap, mobile: p.device !== "browser" || file.startsWith("mobile-") }));
+    const shots = p.screens.map(([file, cap, kind]) => ({ src: shotSrc(p, file), cap, mobile: kind ? kind === "phone" : p.device !== "browser" || file.startsWith("mobile-") }));
     const desk = shots.filter((s) => !s.mobile), mob = shots.filter((s) => s.mobile);
+    const groups = p.device === "phone" ? [mob, desk] : [desk, mob];
+    const section = (title, body) => (body ? `<div class="case-body"><h2 class="display h3" data-reveal>${title}</h2><div class="prose">${body}</div></div>` : "");
     const shotHTML = (s) => `<button class="shot" type="button" data-shot="${shots.indexOf(s)}">${s.mobile ? phone(s.src, s.cap) : browser(s.src, s.cap, hostOf(p))}<span class="cap">${esc(s.cap)}</span></button>`;
+    const galleryHTML = groups.filter((g) => g.length).map((g, i) => `<div class="gallery${g === desk ? ` gallery--web${g.length === 1 ? " gallery--single" : ""}` : ""}${i ? " gallery__sub" : ""}">${g.map(shotHTML).join("")}</div>`).join("");
     const decision = (d) => {
       const m = d.match(/^([^:]{3,32}):\s(.+)$/);
       return `<li data-reveal>${m ? `<b>${esc(m[1])}.</b> ${esc(m[2][0].toUpperCase() + m[2].slice(1))}` : esc(d)}</li>`;
     };
 
     app.innerHTML = `
-      <section class="panel case-hero" aria-label="${esc(p.title)} overview">
+      <section class="panel case-hero" id="top" aria-label="${esc(p.title)} overview">
         ${topbar(`<a class="pill back-link" href="index.html#work">${I.left}All work</a>`)}
         <div class="case-hero__grid">
           <div class="case-hero__text">
-            <span class="eyebrow">Case study · ${esc(p.year)}</span>
+            <span class="eyebrow">${p.group === "gabeweb" ? `${gmark()}Built at ${esc(C.person.company)}` : "Case study"}${p.year ? ` · ${esc(p.year)}` : ""}</span>
             <h1 class="display h1">${esc(p.title)}</h1>
             <p class="lede">${esc(p.summary)}</p>
             <dl class="case-meta">
               <div><dt>Role</dt><dd>${p.roles.map(esc).join(", ")}</dd></div>
               <div><dt>Platform</dt><dd>${p.platform.map(esc).join(", ")}</dd></div>
-              <div><dt>Scope</dt><dd>${esc(p.category)}</dd></div>
+              ${p.client ? `<div><dt>Client</dt><dd>${esc(p.client)}</dd></div>` : `<div><dt>Scope</dt><dd>${esc(p.category)}</dd></div>`}
             </dl>
-            ${p.links.length ? `<div class="case-hero__ctas">${p.links.map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ${I.arrow}</a>`).join("")}</div>` : ""}
+            ${p.links.length ? `<div class="case-hero__ctas">${p.links.map((l, i) => `<a class="btn${i ? " btn--soft" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ${I.arrow}</a>`).join("")}</div>` : ""}
           </div>
           <div class="case-hero__visual">${coverStack(p, false)}</div>
         </div>
@@ -292,41 +334,25 @@
 
       <section class="panel panel--light" aria-label="The story">
         <div class="inner">
-          <div class="case-body">
-            <h2 class="display h3" data-reveal>The problem</h2>
-            <div class="prose"><p data-reveal>${esc(p.problem)}</p></div>
-          </div>
-          <div class="case-body">
-            <h2 class="display h3" data-reveal>What I did</h2>
-            <div class="prose">
-              <p data-reveal>${esc(p.approach)}</p>
-              ${p.decisions.length ? `<p data-reveal>Key decisions:</p><ol class="decisions">${p.decisions.map(decision).join("")}</ol>` : ""}
-            </div>
-          </div>
-          <div class="case-body">
-            <h2 class="display h3" data-reveal>Results</h2>
-            <div class="prose"><div class="result" data-reveal>${I.check}<p>${esc(p.results)}</p></div></div>
-          </div>
-          <div class="case-body">
-            <h2 class="display h3" data-reveal>Tools &amp; tech</h2>
-            <div class="chips" data-reveal>${p.stack.map((t) => `<span>${toolMark(t)}${esc(t)}</span>`).join("")}</div>
-          </div>
+          ${section("The problem", p.problem ? `<p data-reveal>${esc(p.problem)}</p>` : "")}
+          ${section(p.group ? "What was built" : "What I did", `${p.approach ? `<p data-reveal>${esc(p.approach)}</p>` : ""}${p.decisions && p.decisions.length ? `<p data-reveal>${p.group ? "Highlights:" : "Key decisions:"}</p><ol class="decisions">${p.decisions.map(decision).join("")}</ol>` : ""}`)}
+          ${section("Results", p.results ? `<div class="result" data-reveal>${I.check}<p>${esc(p.results)}</p></div>` : "")}
+          ${section("Tools &amp; tech", p.stack && p.stack.length ? `<div class="chips" data-reveal>${p.stack.map((t) => `<span>${toolMark(t)}${esc(t)}</span>`).join("")}</div>` : "")}
         </div>
       </section>
 
-      <section class="panel" aria-labelledby="screens-title">
+      ${shots.length ? `<section class="panel" aria-labelledby="screens-title">
         <div class="inner">
           <div class="head head--row">
             <div class="head" data-reveal>
-              <span class="eyebrow">${shots.length} screens</span>
+              <span class="eyebrow">${shots.length} ${shots.length === 1 ? "screen" : "screens"}</span>
               <h2 class="display h2" id="screens-title">${twoTone("A closer [look.]")}</h2>
             </div>
             <p class="lede" data-reveal style="max-width:34ch">Tap any screen to see it full size.</p>
           </div>
-          ${desk.length ? `<div class="gallery gallery--web">${desk.map(shotHTML).join("")}</div>` : ""}
-          ${mob.length ? `<div class="gallery${desk.length ? " gallery__sub" : ""}">${mob.map(shotHTML).join("")}</div>` : ""}
+          ${galleryHTML}
         </div>
-      </section>
+      </section>` : ""}
 
       <a class="next-case" href="${projectUrl(next)}" data-p style="${pVars(next.theme)}" data-reveal>
         <div style="display:grid;gap:10px"><span class="eyebrow">Next case study</span><span class="display h2">${esc(next.title)}</span><span style="opacity:.8;max-width:60ch">${esc(next.summary)}</span></div>
@@ -400,6 +426,18 @@
         try { localStorage.setItem("theme", root.dataset.theme); } catch {}
       }
     });
+
+    // back to top: shows once the last section is on screen
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("[data-to-top]")) return;
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    });
+    const topBtn = document.querySelector(".to-top");
+    const last = [...document.querySelectorAll("#app > .panel")].pop();
+    if (topBtn && last && "IntersectionObserver" in window) {
+      new IntersectionObserver(([en]) => topBtn.classList.toggle("show", en.isIntersecting), { threshold: 0.15 }).observe(last);
+    }
 
     // reveal on scroll
     const els = [...document.querySelectorAll("[data-reveal], .contact")];

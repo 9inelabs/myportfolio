@@ -29,6 +29,8 @@ window.PORTFOLIO = {
 
   socials: [
     { label: "GitHub", url: "https://github.com/9inelabs" },
+    { label: "Pinterest", url: "https://www.pinterest.com/franklyncreatives/" },
+    { label: "YouTube", url: "https://www.youtube.com/@innov8persecondips121" },
     // { label: "LinkedIn", url: "https://linkedin.com/in/..." },
     // { label: "Dribbble", url: "https://dribbble.com/..." },
   ],
@@ -79,6 +81,8 @@ window.PORTFOLIO = {
       { title: "Design Systems", icon: "grid", text: "Reusable components and tokens so teams design and ship consistently." },
       { title: "E-commerce", icon: "bag", text: "Stores with clear catalogues, simple checkout and order tracking customers trust." },
       { title: "Website Maintenance", icon: "wrench", text: "Updates, fixes and improvements that keep a live site healthy after launch." },
+      { title: "Graphic Design", icon: "image", text: "Event flyers, church media, logos and social posts that stop the scroll." },
+      { title: "Motion Graphics", icon: "play", text: "Promo videos, logo reveals, lyric videos and explainers for brands and events." },
     ],
   },
 
@@ -111,6 +115,51 @@ window.PORTFOLIO = {
       "GitHub": { icon: "github" },
       "Vercel": { icon: "vercel" },
     },
+  },
+
+  // Graphic design: only Franklyn's own pins from Pinterest. Images live in assets/img/graphics.
+  // `type` drives the filter buttons; add a new type and its button appears.
+  graphics: {
+    heading: "Graphic [design.]",
+    text: "Flyers, church media and brand marks. More on Pinterest.",
+    more: { label: "See more on Pinterest", url: "https://www.pinterest.com/franklyncreatives/" },
+    items: [
+      { file: "made-in-naija", title: "Made in Naija at Lavianto Lounge", type: "Flyers", w: 1024, h: 1280 },
+      { file: "worship-warfare-lineup", title: "Worship and Warfare 5.0: full lineup", type: "Flyers", w: 1400, h: 1739 },
+      { file: "worship-warfare-chimdi", title: "Worship and Warfare 5.0: Hon. Chimdi", type: "Flyers", w: 1334, h: 1890 },
+      { file: "trendy-logo", title: "Trendy logo", type: "Branding", w: 1400, h: 1400 },
+      { file: "worship-warfare-ebuka", title: "Worship and Warfare 5.0: Min. Ebuka Praise", type: "Flyers", w: 1334, h: 1890 },
+      { file: "farmhaul-wordmark", title: "Farmhaul wordmark", type: "Branding", w: 1400, h: 1400 },
+      { file: "worship-warfare-maureen", title: "Worship and Warfare 5.0: Min. Maureen Sings", type: "Flyers", w: 1334, h: 1890 },
+      { file: "app-icon", title: "App icon", type: "Branding", w: 1400, h: 1400 },
+    ],
+  },
+
+  // Motion graphics: videos from YouTube. `id` is the part after watch?v= or /shorts/.
+  // Thumbnails live in assets/img/motion/<id>.webp.
+  motion: {
+    heading: "Motion [graphics.]",
+    text: "Promos, explainers and lyric videos, animated and edited by me. Tap one to play it.",
+    more: { label: "Watch on YouTube", url: "https://www.youtube.com/@innov8persecondips121" },
+    videos: [
+      { id: "4zzqTOfXBS8", title: "Unlock Your Doors" },
+      { id: "vx19PmALkQ4", title: "Step Up Your Game" },
+      { id: "Zbw7qQK19Bg", title: "Montage for Matron" },
+      { id: "Q_9zvs8v5HI", title: "Lasaco Presentation" },
+      { id: "4mzPfVRjbQg", title: "Ember Graphics" },
+      { id: "2PcQY_ZF1Og", title: "How to Register: Dynamic Pageant" },
+      { id: "nHSkc6qXlVk", title: "Registration Made Easy" },
+      { id: "hOJnJ7cNFck", title: "Sign-up Guide for a Beauty Pageant", ratio: "4 / 3" },
+    ],
+    shorts: [
+      { id: "NGCJiH9SdME", title: "Lyric Video: SinnerMan by Slim Ice" },
+      { id: "YS-MviX-sj8", title: "Reach for the Stars" },
+      { id: "POjfXEgsBP0", title: "Meet Victor" },
+      { id: "SuIih50Mrec", title: "Your Efforts Count" },
+      { id: "QrD-8hqB_b8", title: "Walkway Limelight" },
+      { id: "YSjaEe4eEIc", title: "Entry Closes" },
+      { id: "YRXqq3p48G8", title: "The Future Graphics" },
+    ],
   },
 
   process: {

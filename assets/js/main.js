@@ -31,6 +31,7 @@
     sun: '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
     moon: '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>',
     up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12.5 2.5 2.5L16 9.5"/></svg>',
     handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>',
   };
@@ -42,6 +43,8 @@
     spark: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"/><path d="M19 16v5M16.5 18.5h5"/>',
     grid: '<rect x="3" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="3.75"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.8"/>',
     bag: '<path d="M5.5 8h13l1 12.5h-15Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+    image: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L6 21"/>',
+    play: '<rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="m10 9 5 3-5 3Z"/>',
     wrench: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
   };
   const TINTS = ["t-lime", "t-lilac", "t-sky", "t-peach"];
@@ -99,6 +102,81 @@
     if (p.device === "logo") return coverStack(p);
     return `<div class="browser browser--scroll"><div class="browser__bar"><i></i><i></i><i></i><b>${esc(hostOf(p) || p.title)}</b></div><div class="browser__view"><img src="${shotSrc(p, p.cover[0])}" alt="${esc(p.title)} preview" loading="lazy" decoding="async"></div></div>`;
   };
+
+  // ---------- graphic design & motion (home) ----------
+  const graphicsSection = () => {
+    const G = C.graphics;
+    if (!G || !G.items.length) return "";
+    const types = [...new Set(G.items.map((g) => g.type))];
+    return `<section class="panel" id="graphics" aria-labelledby="graphics-title">
+      <div class="inner">
+        <div class="head head--row">
+          <div class="head" data-reveal>
+            <span class="eyebrow">Graphic design</span>
+            <h2 class="display h2" id="graphics-title">${twoTone(G.heading)}</h2>
+            <p class="lede">${esc(G.text)}</p>
+          </div>
+          <div class="head-actions" data-reveal>
+            <div class="filters" role="group" aria-label="Filter designs">
+              <button type="button" data-gfilter="all" aria-pressed="true">All<span class="count">${G.items.length}</span></button>
+              ${types.map((t) => `<button type="button" data-gfilter="${esc(t)}" aria-pressed="false">${esc(t)}<span class="count">${G.items.filter((g) => g.type === t).length}</span></button>`).join("")}
+            </div>
+            ${G.more ? `<a class="btn btn--ghost btn--sm" href="${esc(G.more.url)}" target="_blank" rel="noopener">${esc(G.more.label)} ${I.arrow}</a>` : ""}
+          </div>
+        </div>
+        <div class="masonry">
+          ${G.items.map((g, i) => `<button type="button" class="design" data-design="${i}" data-type="${esc(g.type)}" data-reveal style="--d:${i % 4}">
+            <img src="assets/img/graphics/${esc(g.file)}.webp" alt="${esc(g.title)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async">
+            <span class="design__cap"><b>${esc(g.title)}</b><span>${esc(g.type)}</span></span>
+          </button>`).join("")}
+        </div>
+      </div>
+    </section>`;
+  };
+
+  const motionSection = () => {
+    const M = C.motion;
+    if (!M || !(M.videos.length || M.shorts.length)) return "";
+    const card = (v, kind, i) => `<button type="button" class="reel reel--${kind}" data-reel="${kind}:${i}" data-reveal style="--d:${i % 4}">
+        <span class="reel__thumb"><img src="assets/img/motion/${esc(v.id)}.webp" alt="" loading="lazy" decoding="async"><span class="reel__play" aria-hidden="true">${I.play}</span></span>
+        <span class="reel__title">${esc(v.title)}</span>
+      </button>`;
+    return `<section class="panel panel--cinema" id="motion" aria-labelledby="motion-title">
+      <div class="inner">
+        <div class="head head--row">
+          <div class="head" data-reveal>
+            <span class="eyebrow">Motion</span>
+            <h2 class="display h2" id="motion-title">${twoTone(M.heading)}</h2>
+            <p class="lede">${esc(M.text)}</p>
+          </div>
+          ${M.more ? `<a class="btn btn--sm reel-more" href="${esc(M.more.url)}" target="_blank" rel="noopener" data-reveal>${esc(M.more.label)} ${I.arrow}</a>` : ""}
+        </div>
+        ${M.videos.length ? `<div class="reel-grid">${M.videos.map((v, i) => card(v, "video", i)).join("")}</div>` : ""}
+        ${M.shorts.length ? `<h3 class="reel-sub" data-reveal>Shorts</h3><div class="reel-row">${M.shorts.map((v, i) => card(v, "short", i)).join("")}</div>` : ""}
+      </div>
+    </section>`;
+  };
+
+  function wireMedia() {
+    const view = mediaViewer();
+    const G = C.graphics, M = C.motion;
+    const designs = [...app.querySelectorAll("[data-design]")];
+    designs.forEach((b) => b.addEventListener("click", () => {
+      const shown = designs.filter((d) => !d.hidden);
+      view(shown.map((d) => { const g = G.items[+d.dataset.design]; return { src: `assets/img/graphics/${g.file}.webp`, cap: g.title }; }), shown.indexOf(b), b);
+    }));
+    app.querySelectorAll("[data-gfilter]").forEach((b) => b.addEventListener("click", () => {
+      const f = b.dataset.gfilter;
+      app.querySelectorAll("[data-gfilter]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      designs.forEach((d) => (d.hidden = !(f === "all" || d.dataset.type === f)));
+    }));
+    if (!M) return;
+    const reels = { video: M.videos.map((v) => ({ yt: v.id, cap: v.title, ratio: v.ratio || "16 / 9" })), short: M.shorts.map((v) => ({ yt: v.id, cap: v.title, ratio: "9 / 16" })) };
+    app.querySelectorAll("[data-reel]").forEach((b) => b.addEventListener("click", () => {
+      const [kind, i] = b.dataset.reel.split(":");
+      view(reels[kind], +i, b);
+    }));
+  }
 
   // ---------- home ----------
   function renderHome() {
@@ -191,6 +269,9 @@
         </div>
       </section>` : ""}
 
+      ${graphicsSection()}
+      ${motionSection()}
+
       <section class="panel panel--light" id="services" aria-labelledby="services-title">
         <div class="inner">
           <div class="head head--center" data-reveal>
@@ -277,6 +358,7 @@
       </section>`;
 
     // work filters
+    wireMedia();
     const cards = [...app.querySelectorAll(".work-card, .mini-card")];
     app.querySelectorAll("[data-filter]").forEach((b) =>
       b.addEventListener("click", () => {
@@ -372,30 +454,46 @@
         </div>
         ${footer()}
       </section>
+    `;
 
-      <div class="lightbox" role="dialog" aria-modal="true" aria-label="Screen viewer" hidden>
-        <div class="lightbox__bar"><span data-lb-cap></span>
-          <div class="lightbox__btns">
-            <button type="button" data-lb="prev" aria-label="Previous screen">${I.left}</button>
-            <button type="button" data-lb="next" aria-label="Next screen">${I.right}</button>
-            <button type="button" data-lb="close" aria-label="Close">${I.close}</button>
-          </div></div>
-        <div class="lightbox__stage" data-lb-stage><img alt=""></div>
-      </div>`;
+    const view = mediaViewer();
+    const items = shots.map((s) => ({ src: s.src, cap: s.cap, cls: s.mobile ? "is-phone" : "" }));
+    app.querySelectorAll("[data-shot]").forEach((b) => b.addEventListener("click", () => view(items, +b.dataset.shot, b)));
+  }
 
-    // lightbox
-    const lb = app.querySelector(".lightbox"), img = lb.querySelector("img"), cap = lb.querySelector("[data-lb-cap]"), stage = lb.querySelector("[data-lb-stage]");
-    let cur = 0, opener = null;
+  // ---------- full-size viewer for screens, designs and videos ----------
+  // items: { src, cap, cls } for an image, or { yt, cap, ratio } for a YouTube video
+  let viewer = null;
+  function mediaViewer() {
+    if (viewer) return viewer;
+    const lb = document.createElement("div");
+    lb.className = "lightbox"; lb.hidden = true;
+    lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.setAttribute("aria-label", "Viewer");
+    lb.innerHTML = `<div class="lightbox__bar"><span data-lb-cap></span>
+        <div class="lightbox__btns">
+          <button type="button" data-lb="prev" aria-label="Previous">${I.left}</button>
+          <button type="button" data-lb="next" aria-label="Next">${I.right}</button>
+          <button type="button" data-lb="close" aria-label="Close">${I.close}</button>
+        </div></div>
+      <div class="lightbox__stage" data-lb-stage></div>`;
+    document.body.appendChild(lb);
+    const cap = lb.querySelector("[data-lb-cap]"), stage = lb.querySelector("[data-lb-stage]");
+    let list = [], cur = 0, opener = null;
     const show = (i) => {
-      cur = (i + shots.length) % shots.length;
-      const s = shots[cur];
-      img.src = s.src; img.alt = s.cap; img.className = s.mobile ? "is-phone" : "";
-      cap.textContent = `${cur + 1} / ${shots.length} · ${s.cap}`;
+      cur = (i + list.length) % list.length;
+      const it = list[cur];
+      stage.innerHTML = it.yt
+        ? `<div class="lightbox__video" style="--ratio:${it.ratio || "16 / 9"}"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(it.yt)}?autoplay=1&rel=0&playsinline=1" title="${esc(it.cap)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
+        : `<img src="${it.src}" alt="${esc(it.cap)}" class="${it.cls || ""}">`;
+      cap.textContent = `${cur + 1} / ${list.length} · ${it.cap}`;
+      lb.querySelectorAll('[data-lb="prev"], [data-lb="next"]').forEach((b) => (b.hidden = list.length < 2));
       stage.scrollTop = 0;
     };
-    const open = (i, el) => { opener = el; show(i); lb.hidden = false; requestAnimationFrame(() => lb.classList.add("open")); document.body.style.overflow = "hidden"; lb.querySelector('[data-lb="close"]').focus(); };
-    const close = () => { lb.classList.remove("open"); document.body.style.overflow = ""; setTimeout(() => (lb.hidden = true), 300); if (opener) opener.focus(); };
-    app.querySelectorAll("[data-shot]").forEach((b) => b.addEventListener("click", () => open(+b.dataset.shot, b)));
+    const close = () => {
+      lb.classList.remove("open"); document.body.style.overflow = "";
+      setTimeout(() => { lb.hidden = true; stage.innerHTML = ""; }, 300);
+      if (opener) opener.focus();
+    };
     lb.addEventListener("click", (e) => {
       const b = e.target.closest("[data-lb]");
       if (b) { b.dataset.lb === "close" ? close() : show(cur + (b.dataset.lb === "next" ? 1 : -1)); return; }
@@ -404,9 +502,15 @@
     document.addEventListener("keydown", (e) => {
       if (lb.hidden) return;
       if (e.key === "Escape") close();
-      if (e.key === "ArrowRight") show(cur + 1);
-      if (e.key === "ArrowLeft") show(cur - 1);
+      if (e.key === "ArrowRight" && list.length > 1) show(cur + 1);
+      if (e.key === "ArrowLeft" && list.length > 1) show(cur - 1);
     });
+    viewer = (items, i, el) => {
+      list = items; opener = el; show(i);
+      lb.hidden = false; requestAnimationFrame(() => lb.classList.add("open"));
+      document.body.style.overflow = "hidden"; lb.querySelector('[data-lb="close"]').focus();
+    };
+    return viewer;
   }
 
   // ---------- behaviour shared by both pages ----------

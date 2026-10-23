@@ -181,6 +181,14 @@
           </div>
           ${M.more ? `<a class="btn btn--sm reel-more" href="${esc(M.more.url)}" target="_blank" rel="noopener" data-reveal>${esc(M.more.label)} ${I.arrow}</a>` : ""}
         </div>
+        ${M.featured && M.featured.length ? `<div class="featured${M.featured.length === 1 ? " featured--solo" : ""}">${M.featured.map((f, i) => `<figure class="feature" data-reveal style="--d:${i}">
+          <button type="button" class="feature__media" data-feature="${i}" aria-label="Play ${esc(f.title)} with sound" style="--ratio:${esc(f.ratio || "16 / 9")}">
+            <video src="assets/video/${esc(f.file)}.mp4" poster="assets/img/motion/${esc(f.file)}.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+            <span class="feature__badge">Featured</span>
+            <span class="feature__sound">${I.play}Play with sound</span>
+          </button>
+          <figcaption>${f.client ? `<span class="feature__client">${esc(f.client)}</span>` : ""}<h3>${esc(f.title)}</h3>${f.text ? `<p>${esc(f.text)}</p>` : ""}</figcaption>
+        </figure>`).join("")}</div>` : ""}
         ${M.videos.length ? `<div class="reel-grid">${M.videos.map((v, i) => card(v, "video", i)).join("")}</div>` : ""}
         ${M.shorts.length ? rail("Shorts", M.shorts.map((v, i) => card(v, "short", i)).join("")) : ""}
       </div>
@@ -211,6 +219,21 @@
     const clips = (G.process || []).map((v) => ({ mp4: `assets/video/${v.file}.mp4`, poster: `assets/img/motion/${v.file}.webp`, cap: v.title, ratio: "9 / 16" }));
     app.querySelectorAll("[data-clip]").forEach((b) => b.addEventListener("click", () => view(clips, +b.dataset.clip, b)));
     if (!M) return;
+    // featured videos: silent loop while on screen, full player with sound on tap
+    const feats = [...app.querySelectorAll("[data-feature]")];
+    const featItems = (M.featured || []).map((f) => ({ mp4: `assets/video/${f.file}.mp4`, poster: `assets/img/motion/${f.file}.webp`, cap: f.title, ratio: f.ratio || "16 / 9" }));
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (feats.length && !still && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver((ens) => ens.forEach((en) => {
+        const v = en.target.querySelector("video");
+        if (en.isIntersecting) { const pr = v.play(); if (pr && pr.catch) pr.catch(() => {}); } else v.pause();
+      }), { threshold: 0.35 });
+      feats.forEach((b) => io.observe(b));
+    }
+    feats.forEach((b) => b.addEventListener("click", () => {
+      feats.forEach((x) => x.querySelector("video").pause());
+      view(featItems, +b.dataset.feature, b);
+    }));
     const reels = { video: M.videos.map((v) => ({ yt: v.id, cap: v.title, ratio: v.ratio || "16 / 9" })), short: M.shorts.map((v) => ({ yt: v.id, cap: v.title, ratio: "9 / 16" })) };
     app.querySelectorAll("[data-reel]").forEach((b) => b.addEventListener("click", () => {
       const [kind, i] = b.dataset.reel.split(":");

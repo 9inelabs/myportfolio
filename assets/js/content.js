@@ -173,6 +173,17 @@ window.PORTFOLIO = {
     heading: "Motion [graphics.]",
     text: "Promos, explainers and lyric videos, animated in After Effects and edited in Premiere Pro. Tap one to play it.",
     more: { label: "Watch on YouTube", url: "https://www.youtube.com/@innov8persecondips121" },
+    // Featured: best work, shown large at the top and playing silently on a loop.
+    // Files: assets/video/<file>.mp4 and a poster in assets/img/motion/<file>.webp. `ratio` is width / height.
+    featured: [
+      {
+        file: "purewash-ad",
+        title: "Purewash brand ad",
+        client: "Purewash",
+        text: "A 28-second ad for a laundry brand: kinetic typography, bold colour transitions and a logo reveal.",
+        ratio: "1600 / 1084",
+      },
+    ],
     videos: [
       { id: "4zzqTOfXBS8", title: "Unlock Your Doors" },
       { id: "vx19PmALkQ4", title: "Step Up Your Game" },

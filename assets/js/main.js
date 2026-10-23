@@ -193,7 +193,7 @@
     const designs = [...app.querySelectorAll("[data-design]")];
     designs.forEach((b) => b.addEventListener("click", () => {
       const shown = designs.filter((d) => !d.hidden);
-      view(shown.map((d) => { const g = G.items[+d.dataset.design]; return { src: `assets/img/graphics/${g.file}.webp`, cap: g.title }; }), shown.indexOf(b), b);
+      view(shown.map((d) => { const g = G.items[+d.dataset.design]; return { src: `assets/img/graphics/${g.file}.webp`, cap: g.title, cls: "is-fit" }; }), shown.indexOf(b), b);
     }));
     let expanded = false, filter = "all";
     const moreBtn = app.querySelector("[data-gmore]");

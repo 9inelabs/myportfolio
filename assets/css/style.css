@@ -565,18 +565,22 @@ p { margin: 0; }
 .next-case .arrow-btn svg { width: 22px; height: 22px; }
 
 /* lightbox */
-.lightbox { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto 1fr; background: rgba(10, 10, 10, .92); color: #f3f2ee; opacity: 0; pointer-events: none; transition: opacity .35s var(--ease); }
+.lightbox { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); background: rgba(10, 10, 10, .96); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: #f3f2ee; opacity: 0; pointer-events: none; transition: opacity .35s var(--ease); }
 .lightbox.open { opacity: 1; pointer-events: auto; }
 .lightbox[hidden] { display: none; }
-.lightbox__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(14px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 14px max(16px, env(safe-area-inset-left)); }
+.lightbox__bar { min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(14px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 14px max(16px, env(safe-area-inset-left)); }
 .lightbox__bar span { font-size: 14px; opacity: .8; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lightbox__btns { display: flex; gap: 8px; flex: none; }
 .lightbox button { width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .12); color: #fff; cursor: pointer; display: grid; place-items: center; }
 .lightbox button:hover { background: rgba(255, 255, 255, .22); }
 .lightbox button svg { width: 18px; height: 18px; }
-.lightbox__stage { overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 8px 16px 40px; overscroll-behavior: contain; }
-.lightbox__stage img { max-width: min(100%, 1400px); height: auto; border-radius: 14px; margin: auto; }
+.lightbox__stage { min-width: 0; min-height: 0; overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 8px max(16px, env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); overscroll-behavior: contain; }
+/* never wider than the screen: min-width 0 lets the image shrink inside the flex stage */
+.lightbox__stage img { display: block; min-width: 0; width: auto; max-width: min(100%, 1400px); height: auto; border-radius: 14px; margin: auto; }
 .lightbox__stage img.is-phone { max-width: min(100%, 430px); }
+/* designs fit the screen whole, no scrolling */
+.lightbox__stage img.is-fit { max-height: calc(100dvh - 130px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); object-fit: contain; }
+.lightbox__video { min-width: 0; max-width: 100%; }
 
 /* ---------- reveal on scroll ---------- */
 .js [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--d, 0) * 90ms); }

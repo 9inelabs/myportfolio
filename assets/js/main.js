@@ -164,6 +164,12 @@
     </section>`;
   };
 
+  // column widths in proportion to each video's shape, so side-by-side videos share one height
+  const featureCols = (fs) => fs.map((f) => {
+    const [w, h] = String(f.ratio || "16 / 9").split("/").map(Number);
+    return `minmax(0, ${(w / h || 16 / 9).toFixed(3)}fr)`;
+  }).join(" ");
+
   const motionSection = () => {
     const M = C.motion;
     if (!M || !(M.videos.length || M.shorts.length)) return "";
@@ -181,7 +187,7 @@
           </div>
           ${M.more ? `<a class="btn btn--sm reel-more" href="${esc(M.more.url)}" target="_blank" rel="noopener" data-reveal>${esc(M.more.label)} ${I.arrow}</a>` : ""}
         </div>
-        ${M.featured && M.featured.length ? `<div class="featured${M.featured.length === 1 ? " featured--solo" : ""}">${M.featured.map((f, i) => `<figure class="feature" data-reveal style="--d:${i}">
+        ${M.featured && M.featured.length ? `<div class="featured${M.featured.length === 1 ? " featured--solo" : ""}" style="--cols:${featureCols(M.featured)}">${M.featured.map((f, i) => `<figure class="feature" data-reveal style="--d:${i}">
           <button type="button" class="feature__media" data-feature="${i}" aria-label="Play ${esc(f.title)} with sound" style="--ratio:${esc(f.ratio || "16 / 9")}">
             <video src="assets/video/${esc(f.file)}.mp4" poster="assets/img/motion/${esc(f.file)}.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video>
             <span class="feature__badge">Featured</span>

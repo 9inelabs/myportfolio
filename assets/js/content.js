@@ -183,6 +183,13 @@ window.PORTFOLIO = {
         text: "A 28-second ad for a laundry brand: kinetic typography, bold colour transitions and a logo reveal.",
         ratio: "1600 / 1084",
       },
+      {
+        file: "ice-and-steak-ad",
+        title: "Ice & Steak restaurant ad",
+        client: "Ice & Steak, Owerri",
+        text: "A 41-second promo for a grill and smoothie spot: animated menu reveals, an animated map to the restaurant and a logo sting.",
+        ratio: "1134 / 1280",
+      },
     ],
     videos: [
       { id: "4zzqTOfXBS8", title: "Unlock Your Doors" },

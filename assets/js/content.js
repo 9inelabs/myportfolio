@@ -90,6 +90,7 @@ window.PORTFOLIO = {
     heading: "The tools [I work with.]",
     groups: [
       { label: "Design", items: ["Figma", "Framer", "Photoshop"] },
+      { label: "Motion", items: ["After Effects", "Premiere Pro"] },
       {
         label: "Build",
         items: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js", "Express", "React Native", "Firebase", "Supabase", "GitHub", "Vercel"],
@@ -100,6 +101,8 @@ window.PORTFOLIO = {
       "Figma": { icon: "figma", color: "#F24E1E" },
       "Framer": { icon: "framer", color: "#0055FF" },
       "Photoshop": { icon: "adobephotoshop", color: "#31A8FF" },
+      "After Effects": { icon: "adobeaftereffects", color: "#9999FF" },
+      "Premiere Pro": { icon: "adobepremierepro", color: "#9999FF" },
       "HTML": { icon: "html5", color: "#E34F26" },
       "CSS": { icon: "css3", color: "#1572B6" },
       "JavaScript": { icon: "javascript", color: "#E8C900" },

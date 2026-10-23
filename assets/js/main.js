@@ -1,7 +1,6 @@
 (() => {
   const C = window.PORTFOLIO;
   const page = document.body.dataset.page;
-  const root = document.documentElement;
   const app = document.getElementById("app");
 
   // ---------- helpers ----------
@@ -28,8 +27,6 @@
     copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A2.5 2.5 0 0 1 2 12.5v-8A2.5 2.5 0 0 1 4.5 2h8A2.5 2.5 0 0 1 15 4.5V5"/></svg>',
     mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6"/></svg>',
     whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.48-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.27.49 1.7.63.72.23 1.37.2 1.88.12.58-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.83 9.83 0 0 1 7 2.9 9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.9 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.4"/></svg>',
-    sun: '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
-    moon: '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>',
     up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></svg>',
     play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12.5 2.5 2.5L16 9.5"/></svg>',
@@ -66,10 +63,9 @@
     ];
     return `<nav class="links" aria-label="Elsewhere">${items.join('<span class="sep" aria-hidden="true">/</span>')}</nav>`;
   };
-  const themeBtn = `<button class="pill theme-toggle" type="button" data-theme-toggle aria-label="Switch between light and dark theme">${I.sun}${I.moon}</button>`;
   const topbar = (left) => `<header class="topbar">
       <div class="topbar__left">${left}</div>
-      <div class="topbar__right">${socialLinks()}${themeBtn}</div>
+      <div class="topbar__right">${socialLinks()}</div>
     </header>`;
   const emailBar = () => `<span class="topbar__email">${esc(C.person.email)}</span>
       <button class="pill" type="button" data-copy="${esc(C.person.email)}">${I.copy}<span>Copy<span class="only-sm"> email</span></span></button>
@@ -118,8 +114,8 @@
           </div>
           <div class="head-actions" data-reveal>
             <div class="filters" role="group" aria-label="Filter designs">
-              <button type="button" data-gfilter="all" aria-pressed="true">All<span class="count">${G.items.length}</span></button>
-              ${types.map((t) => `<button type="button" data-gfilter="${esc(t)}" aria-pressed="false">${esc(t)}<span class="count">${G.items.filter((g) => g.type === t).length}</span></button>`).join("")}
+              <button type="button" data-gfilter="all" aria-pressed="true">All</button>
+              ${types.map((t) => `<button type="button" data-gfilter="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("")}
             </div>
             ${G.more ? `<a class="btn btn--ghost btn--sm" href="${esc(G.more.url)}" target="_blank" rel="noopener">${esc(G.more.label)} ${I.arrow}</a>` : ""}
           </div>
@@ -183,11 +179,6 @@
     const P = C.person;
     const featured = C.projects.filter((p) => !p.group);
     const more = C.projects.filter((p) => p.group === "gabeweb");
-    const counts = {
-      all: C.projects.length,
-      design: C.projects.filter((p) => /design/i.test(p.category)).length,
-      dev: C.projects.filter((p) => /development/i.test(p.category)).length,
-    };
     const logos = C.clients
       .map((c) => {
         const inner = `${c.logo ? `<img src="${esc(c.logo)}" alt="${c.showName ? "" : esc(c.name)}" style="--lh:${c.height || 30}px" loading="lazy">` : ""}${c.showName || !c.logo ? `<span>${esc(c.name)}</span>` : ""}`;
@@ -224,9 +215,9 @@
               <h2 class="display h2" id="work-title">${twoTone("Products I've [designed and built.]")}</h2>
             </div>
             <div class="filters" role="group" aria-label="Filter projects" data-reveal>
-              <button type="button" data-filter="all" aria-pressed="true">All<span class="count">${counts.all}</span></button>
-              <button type="button" data-filter="design" aria-pressed="false">Design<span class="count">${counts.design}</span></button>
-              <button type="button" data-filter="dev" aria-pressed="false">Development<span class="count">${counts.dev}</span></button>
+              <button type="button" data-filter="all" aria-pressed="true">All</button>
+              <button type="button" data-filter="design" aria-pressed="false">Design</button>
+              <button type="button" data-filter="dev" aria-pressed="false">Development</button>
             </div>
           </div>
           <div class="work-grid">
@@ -526,11 +517,6 @@
       if (b) {
         try { await navigator.clipboard.writeText(b.dataset.copy); say("Email copied"); }
         catch { say(b.dataset.copy); }
-      }
-      if (e.target.closest("[data-theme-toggle]")) {
-        const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-        root.dataset.theme = dark ? "light" : "dark";
-        try { localStorage.setItem("theme", root.dataset.theme); } catch {}
       }
     });
 

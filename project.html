@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     document.documentElement.classList.add("js");
-    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    try { localStorage.removeItem("theme"); } catch (e) {}
   </script>
   <title>Case study · Franklyn Raymond</title>
   <meta name="description" content="A case study by Franklyn Raymond, Developer and UI/UX Specialist at Gabeweb.">

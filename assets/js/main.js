@@ -100,6 +100,35 @@
   };
 
   // ---------- graphic design & motion (home) ----------
+  // a single-line row of vertical cards that only scrolls sideways, with arrow buttons
+  const rail = (title, cards) => `<div class="rail" data-reveal>
+      <div class="rail__head"><h3 class="reel-sub">${esc(title)}</h3>
+        <div class="rail__nav">
+          <button type="button" data-rail="-1" aria-label="Scroll ${esc(title)} left">${I.left}</button>
+          <button type="button" data-rail="1" aria-label="Scroll ${esc(title)} right">${I.right}</button>
+        </div></div>
+      <div class="reel-row" data-rail-track>${cards}</div>
+    </div>`;
+
+  function wireRails() {
+    app.querySelectorAll(".rail").forEach((r) => {
+      const track = r.querySelector("[data-rail-track]");
+      const [prev, next] = r.querySelectorAll("[data-rail]");
+      const update = () => {
+        const max = track.scrollWidth - track.clientWidth - 2;
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= max;
+        r.classList.toggle("rail--static", max <= 0);
+      };
+      r.querySelectorAll("[data-rail]").forEach((b) => b.addEventListener("click", () => {
+        track.scrollBy({ left: +b.dataset.rail * track.clientWidth * 0.8, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      }));
+      track.addEventListener("scroll", update, { passive: true });
+      addEventListener("resize", update);
+      update();
+    });
+  }
+
   const SHOW_FIRST = 12;
   const graphicsSection = () => {
     const G = C.graphics;
@@ -128,10 +157,9 @@
           </button>`).join("")}
         </div>
         ${G.items.length > SHOW_FIRST ? `<div class="more-row"><button type="button" class="btn btn--ghost" data-gmore>Show all ${G.items.length} designs</button></div>` : ""}
-        ${G.process && G.process.length ? `<h3 class="reel-sub" data-reveal>Design process</h3>
-        <div class="reel-row">${G.process.map((v, i) => `<button type="button" class="reel reel--short" data-clip="${i}" data-reveal style="--d:${i % 4}">
+        ${G.process && G.process.length ? rail("Design process", G.process.map((v, i) => `<button type="button" class="reel reel--short" data-clip="${i}">
           <span class="reel__thumb"><img src="assets/img/motion/${esc(v.file)}.webp" alt="" loading="lazy" decoding="async"><span class="reel__play" aria-hidden="true">${I.play}</span></span>
-          <span class="reel__title">${esc(v.title)}</span></button>`).join("")}</div>` : ""}
+          <span class="reel__title">${esc(v.title)}</span></button>`).join("")) : ""}
       </div>
     </section>`;
   };
@@ -139,7 +167,7 @@
   const motionSection = () => {
     const M = C.motion;
     if (!M || !(M.videos.length || M.shorts.length)) return "";
-    const card = (v, kind, i) => `<button type="button" class="reel reel--${kind}" data-reel="${kind}:${i}" data-reveal style="--d:${i % 4}">
+    const card = (v, kind, i) => `<button type="button" class="reel reel--${kind}" data-reel="${kind}:${i}"${kind === "video" ? ` data-reveal style="--d:${i % 4}"` : ""}>
         <span class="reel__thumb"><img src="assets/img/motion/${esc(v.id)}.webp" alt="" loading="lazy" decoding="async"><span class="reel__play" aria-hidden="true">${I.play}</span></span>
         <span class="reel__title">${esc(v.title)}</span>
       </button>`;
@@ -154,7 +182,7 @@
           ${M.more ? `<a class="btn btn--sm reel-more" href="${esc(M.more.url)}" target="_blank" rel="noopener" data-reveal>${esc(M.more.label)} ${I.arrow}</a>` : ""}
         </div>
         ${M.videos.length ? `<div class="reel-grid">${M.videos.map((v, i) => card(v, "video", i)).join("")}</div>` : ""}
-        ${M.shorts.length ? `<h3 class="reel-sub" data-reveal>Shorts</h3><div class="reel-row">${M.shorts.map((v, i) => card(v, "short", i)).join("")}</div>` : ""}
+        ${M.shorts.length ? rail("Shorts", M.shorts.map((v, i) => card(v, "short", i)).join("")) : ""}
       </div>
     </section>`;
   };
@@ -366,6 +394,7 @@
 
     // work filters
     wireMedia();
+    wireRails();
     const cards = [...app.querySelectorAll(".work-card, .mini-card")];
     app.querySelectorAll("[data-filter]").forEach((b) =>
       b.addEventListener("click", () => {

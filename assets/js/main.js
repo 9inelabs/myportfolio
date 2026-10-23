@@ -71,7 +71,7 @@
       <button class="pill" type="button" data-copy="${esc(C.person.email)}">${I.copy}<span>Copy<span class="only-sm"> email</span></span></button>
       ${C.person.cv ? `<a class="pill" href="${esc(C.person.cv)}" target="_blank" rel="noopener">CV</a>` : ""}`;
   const footer = () => `<footer class="footer">
-      <span>© ${new Date().getFullYear()} ${esc(C.person.name)}. Designed and built by me.</span>
+      <span>© ${new Date().getFullYear()}. Designed and built by ${esc(C.person.name)}.</span>
       <div class="footer__right">${socialLinks()}<a class="to-top-link" href="#top" data-to-top>${I.up}Back to top</a></div>
     </footer>
     <button class="to-top" type="button" data-to-top aria-label="Back to top">${I.up}</button>`;

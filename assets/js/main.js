@@ -100,6 +100,7 @@
   };
 
   // ---------- graphic design & motion (home) ----------
+  const SHOW_FIRST = 12;
   const graphicsSection = () => {
     const G = C.graphics;
     if (!G || !G.items.length) return "";
@@ -121,11 +122,16 @@
           </div>
         </div>
         <div class="masonry">
-          ${G.items.map((g, i) => `<button type="button" class="design" data-design="${i}" data-type="${esc(g.type)}" data-reveal style="--d:${i % 4}">
-            <img src="assets/img/graphics/${esc(g.file)}.webp" alt="${esc(g.title)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async">
+          ${G.items.map((g, i) => `<button type="button" class="design" data-design="${i}" data-type="${esc(g.type)}"${i >= SHOW_FIRST ? " hidden" : ""} data-reveal style="--d:${i % 4}">
+            <img src="assets/img/graphics/thumb/${esc(g.file)}.webp" alt="${esc(g.title)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async">
             <span class="design__cap"><b>${esc(g.title)}</b><span>${esc(g.type)}</span></span>
           </button>`).join("")}
         </div>
+        ${G.items.length > SHOW_FIRST ? `<div class="more-row"><button type="button" class="btn btn--ghost" data-gmore>Show all ${G.items.length} designs</button></div>` : ""}
+        ${G.process && G.process.length ? `<h3 class="reel-sub" data-reveal>Design process</h3>
+        <div class="reel-row">${G.process.map((v, i) => `<button type="button" class="reel reel--short" data-clip="${i}" data-reveal style="--d:${i % 4}">
+          <span class="reel__thumb"><img src="assets/img/motion/${esc(v.file)}.webp" alt="" loading="lazy" decoding="async"><span class="reel__play" aria-hidden="true">${I.play}</span></span>
+          <span class="reel__title">${esc(v.title)}</span></button>`).join("")}</div>` : ""}
       </div>
     </section>`;
   };
@@ -161,11 +167,21 @@
       const shown = designs.filter((d) => !d.hidden);
       view(shown.map((d) => { const g = G.items[+d.dataset.design]; return { src: `assets/img/graphics/${g.file}.webp`, cap: g.title }; }), shown.indexOf(b), b);
     }));
+    let expanded = false, filter = "all";
+    const moreBtn = app.querySelector("[data-gmore]");
+    const apply = () => {
+      designs.forEach((d, i) => (d.hidden = filter === "all" ? !expanded && i >= SHOW_FIRST : d.dataset.type !== filter));
+      if (moreBtn) moreBtn.parentElement.hidden = expanded || filter !== "all";
+      designs.forEach((d) => d.classList.add("is-in"));
+    };
     app.querySelectorAll("[data-gfilter]").forEach((b) => b.addEventListener("click", () => {
-      const f = b.dataset.gfilter;
+      filter = b.dataset.gfilter;
       app.querySelectorAll("[data-gfilter]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-      designs.forEach((d) => (d.hidden = !(f === "all" || d.dataset.type === f)));
+      apply();
     }));
+    if (moreBtn) moreBtn.addEventListener("click", () => { expanded = true; apply(); });
+    const clips = (G.process || []).map((v) => ({ mp4: `assets/video/${v.file}.mp4`, poster: `assets/img/motion/${v.file}.webp`, cap: v.title, ratio: "9 / 16" }));
+    app.querySelectorAll("[data-clip]").forEach((b) => b.addEventListener("click", () => view(clips, +b.dataset.clip, b)));
     if (!M) return;
     const reels = { video: M.videos.map((v) => ({ yt: v.id, cap: v.title, ratio: v.ratio || "16 / 9" })), short: M.shorts.map((v) => ({ yt: v.id, cap: v.title, ratio: "9 / 16" })) };
     app.querySelectorAll("[data-reel]").forEach((b) => b.addEventListener("click", () => {
@@ -473,7 +489,9 @@
     const show = (i) => {
       cur = (i + list.length) % list.length;
       const it = list[cur];
-      stage.innerHTML = it.yt
+      stage.innerHTML = it.mp4
+        ? `<div class="lightbox__video" style="--ratio:${it.ratio || "16 / 9"}"><video src="${it.mp4}" poster="${it.poster || ""}" controls autoplay playsinline></video></div>`
+        : it.yt
         ? `<div class="lightbox__video" style="--ratio:${it.ratio || "16 / 9"}"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(it.yt)}?autoplay=1&rel=0&playsinline=1" title="${esc(it.cap)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
         : `<img src="${it.src}" alt="${esc(it.cap)}" class="${it.cls || ""}">`;
       cap.textContent = `${cur + 1} / ${list.length} · ${it.cap}`;

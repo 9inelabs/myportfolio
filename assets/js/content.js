@@ -120,21 +120,50 @@ window.PORTFOLIO = {
     },
   },
 
-  // Graphic design: only Franklyn's own pins from Pinterest. Images live in assets/img/graphics.
-  // `type` drives the filter buttons; add a new type and its button appears.
+  // Graphic design: Franklyn's own uploads from Pinterest (the "Created" tab). Full-size images live in
+  // assets/img/graphics, small previews in assets/img/graphics/thumb. `type` drives the filter buttons.
   graphics: {
     heading: "Graphic [design.]",
-    text: "Flyers, church media and brand marks. More on Pinterest.",
+    text: "Event flyers, church media, social posts and brand identities.",
     more: { label: "See more on Pinterest", url: "https://www.pinterest.com/franklyncreatives/" },
     items: [
+      { file: "rejuvenate-youth-day", title: "Rejuvenate Youth Day", type: "Flyers", w: 1300, h: 1654 },
+      { file: "natoch-cake-class", title: "Natoch Treats: cake making class", type: "Social media", w: 1400, h: 1638 },
+      { file: "samsparado-tailoring", title: "Samsparado Tailoring services", type: "Social media", w: 1400, h: 1656 },
+      { file: "free-to-worship", title: "Free to Worship: The Gathering Experience 5", type: "Flyers", w: 1340, h: 1545 },
       { file: "made-in-naija", title: "Made in Naija at Lavianto Lounge", type: "Flyers", w: 1024, h: 1280 },
+      { file: "finnie-kulture-brand-guide", title: "Finnie Kulture brand guide", type: "Branding", w: 1080, h: 1920 },
+      { file: "finnie-kulture-campaign", title: "Finnie Kulture campaign", type: "Social media", w: 1400, h: 1707 },
+      { file: "natoch-health-drinks-class", title: "Natoch Treats: health drinks class", type: "Social media", w: 1400, h: 1638 },
+      { file: "strictly-lavianto", title: "Strictly Lavianto staff party", type: "Flyers", w: 1400, h: 1660 },
       { file: "worship-warfare-lineup", title: "Worship and Warfare 5.0: full lineup", type: "Flyers", w: 1400, h: 1739 },
+      { file: "naytyve-services", title: "Naytyve services", type: "Social media", w: 1400, h: 1716 },
+      { file: "natoch-pastries-class", title: "Natoch Treats: pastries class", type: "Social media", w: 1400, h: 1638 },
+      { file: "finnie-kulture-logo", title: "Finnie Kulture logo", type: "Branding", w: 1400, h: 1400 },
+      { file: "natoch-cake-class-pink", title: "Natoch Treats: cake making class", type: "Social media", w: 1400, h: 1670 },
       { file: "worship-warfare-chimdi", title: "Worship and Warfare 5.0: Hon. Chimdi", type: "Flyers", w: 1334, h: 1890 },
-      { file: "trendy-logo", title: "Trendy logo", type: "Branding", w: 1400, h: 1400 },
-      { file: "worship-warfare-ebuka", title: "Worship and Warfare 5.0: Min. Ebuka Praise", type: "Flyers", w: 1334, h: 1890 },
-      { file: "farmhaul-wordmark", title: "Farmhaul wordmark", type: "Branding", w: 1400, h: 1400 },
+      { file: "franklyn-ray-poster", title: "Franklyn Ray poster", type: "Social media", w: 1400, h: 1709 },
+      { file: "natoch-pastries-class-pink", title: "Natoch Treats: pastries class", type: "Social media", w: 1400, h: 1670 },
+      { file: "free-to-worship-lineup", title: "Free to Worship: full lineup", type: "Flyers", w: 1340, h: 1545 },
       { file: "worship-warfare-maureen", title: "Worship and Warfare 5.0: Min. Maureen Sings", type: "Flyers", w: 1334, h: 1890 },
+      { file: "birthday-precious-ebuka", title: "Birthday tribute: Min. Precious Ebuka", type: "Flyers", w: 1400, h: 1670 },
+      { file: "birthday-emmanuel", title: "Birthday tribute: Emmanuel", type: "Flyers", w: 1400, h: 1400 },
+      { file: "worship-warfare-ebuka", title: "Worship and Warfare 5.0: Min. Ebuka Praise", type: "Flyers", w: 1334, h: 1890 },
+      { file: "finnie-kulture-logo-dark", title: "Finnie Kulture logo on dark", type: "Branding", w: 1400, h: 860 },
+      { file: "personal-brand-post", title: "Personal brand post", type: "Social media", w: 1400, h: 1400 },
+      { file: "apology-statement", title: "Official apology statement", type: "Social media", w: 1400, h: 1719 },
+      { file: "trendy-logo", title: "Trendy logo", type: "Branding", w: 1400, h: 1400 },
+      { file: "finnie-kulture-lockups", title: "Finnie Kulture logo lockups", type: "Branding", w: 1314, h: 1600 },
+      { file: "farmhaul-wordmark", title: "Farmhaul wordmark", type: "Branding", w: 1400, h: 1400 },
       { file: "app-icon", title: "App icon", type: "Branding", w: 1400, h: 1400 },
+      { file: "franklyncreatives-banner", title: "franklyncreatives banner", type: "Social media", w: 1400, h: 825 },
+    ],
+    // Behind-the-scenes clips: assets/video/<file>.mp4, poster image in assets/img/motion/<file>.webp
+    process: [
+      { file: "design-process-finnie-kulture", title: "Design process: Finnie Kulture campaign" },
+      { file: "design-process-social-posts", title: "Design process: social posts" },
+      { file: "design-process-flyer", title: "Design process: event flyer" },
+      { file: "pocketspend-reveal", title: "PocketSpend logo and app reveal" },
     ],
   },
 
@@ -142,7 +171,7 @@ window.PORTFOLIO = {
   // Thumbnails live in assets/img/motion/<id>.webp.
   motion: {
     heading: "Motion [graphics.]",
-    text: "Promos, explainers and lyric videos, animated and edited by me. Tap one to play it.",
+    text: "Promos, explainers and lyric videos, animated in After Effects and edited in Premiere Pro. Tap one to play it.",
     more: { label: "Watch on YouTube", url: "https://www.youtube.com/@innov8persecondips121" },
     videos: [
       { id: "4zzqTOfXBS8", title: "Unlock Your Doors" },
